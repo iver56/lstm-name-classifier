@@ -12,8 +12,10 @@ from keras.optimizers import RMSprop
 
 class Vectorizer(object):
     def __init__(self):
-        self.boy_names = self.read_file_lines(os.path.join('data', 'boy_names.txt'))
-        self.girl_names = self.read_file_lines(os.path.join('data', 'girl_names.txt'))
+        self.boy_names = self.read_file_lines(os.path.join('data', 'norwegian_male_names.txt'))
+        #self.boy_names += self.read_file_lines(os.path.join('data', 'english_american_male_names.txt'))
+        self.girl_names = self.read_file_lines(os.path.join('data', 'norwegian_female_names.txt'))
+        #self.girl_names += self.read_file_lines(os.path.join('data', 'english_american_female_names.txt'))
 
         print('{} boy names, {} girl names'.format(len(self.boy_names), len(self.girl_names)))
 
@@ -62,7 +64,7 @@ class Vectorizer(object):
         print(model.summary())
 
         # Fit model
-        model.fit(x, y, epochs=400, batch_size=128)
+        model.fit(x, y, epochs=200, batch_size=128)
 
         # Final evaluation of the model
         scores = model.evaluate(x, y, verbose=0)
