@@ -15,8 +15,6 @@ class Vectorizer(object):
         self.boy_names = self.read_file_lines(os.path.join('data', 'norwegian_male_names.txt'))
         self.girl_names = self.read_file_lines(os.path.join('data', 'norwegian_female_names.txt'))
 
-        print('{} boy names, {} girl names'.format(len(self.boy_names), len(self.girl_names)))
-
         self.characters = set(''.join(self.boy_names)).union(set(''.join(self.girl_names)))
         self.ordered_characters = sorted(list(self.characters))
         self.num_characters = len(self.ordered_characters)
@@ -25,7 +23,6 @@ class Vectorizer(object):
         }
 
         max_name_length = max(len(name) for name in self.boy_names + self.girl_names)
-        print('Max name length: {}'.format(max_name_length))
         self.max_string_length = max_name_length
 
     def train_model(self):
