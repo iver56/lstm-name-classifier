@@ -1,9 +1,9 @@
+import io
 import os
 import random
-import io
 
 import numpy as np
-from keras.layers import Dense, TimeDistributed
+from keras.layers import Dense
 from keras.layers import LSTM
 from keras.layers.core import Activation
 from keras.models import Sequential
@@ -13,19 +13,11 @@ from keras.optimizers import RMSprop
 class Vectorizer(object):
     def __init__(self):
         self.boy_names = self.read_file_lines(os.path.join('data', 'norwegian_male_names.txt'))
-        #self.boy_names += self.read_file_lines(os.path.join('data', 'english_american_male_names.txt'))
         self.girl_names = self.read_file_lines(os.path.join('data', 'norwegian_female_names.txt'))
-        #self.girl_names += self.read_file_lines(os.path.join('data', 'english_american_female_names.txt'))
 
         print('{} boy names, {} girl names'.format(len(self.boy_names), len(self.girl_names)))
 
-        self.characters = set(
-            ' '.join(self.boy_names)
-        ).union(
-            set(' '.join(self.girl_names))
-        ).union(
-            {chr(3)}  # "End of text" (ETX) character
-        )
+        self.characters = set(''.join(self.boy_names)).union(set(''.join(self.girl_names)))
         self.ordered_characters = sorted(list(self.characters))
         self.num_characters = len(self.ordered_characters)
         self.character_to_index = {
@@ -34,7 +26,7 @@ class Vectorizer(object):
 
         max_name_length = max(len(name) for name in self.boy_names + self.girl_names)
         print('Max name length: {}'.format(max_name_length))
-        self.max_string_length = max_name_length + 1  # because of the ETX character
+        self.max_string_length = max_name_length
 
     def train_model(self):
         boy_names = self.preprocess_strings(self.boy_names, self.max_string_length)
@@ -55,9 +47,9 @@ class Vectorizer(object):
 
         # Create model
         model = Sequential()
-        model.add(LSTM(units=64, input_dim=self.num_characters, return_sequences=True))
+        model.add(LSTM(units=64, input_shape=(None, self.num_characters), return_sequences=True))
         model.add(Activation('relu'))
-        model.add(LSTM(units=64, input_dim=self.num_characters))
+        model.add(LSTM(units=64))
         model.add(Activation('relu'))
         model.add(Dense(1, activation='sigmoid'))
         model.compile(loss='binary_crossentropy', optimizer=RMSprop(), metrics=['accuracy'])
@@ -81,8 +73,8 @@ class Vectorizer(object):
 
     @staticmethod
     def preprocess_strings(strings, max_length):
-        # Right pad names and add ETX character
-        return [(s + chr(3)).ljust(max_length) for s in strings]
+        # Right pad names
+        return [s.ljust(max_length) for s in strings]
 
     def vectorize_string(self, s):
         vectors = []
