@@ -12,19 +12,8 @@ if __name__ == '__main__':
 
     strings_to_try = [
         'henrik',
-        'kai roger',
-        'liin',
-        'hanna-kai',
-        'håkon-jarle',
-        'kim',
-        'jarle-håkon',
         'andrea',
         'åshild',
-        'tomine',
-        'tomhilde',
-        'livar',
-        'reil',
-        'bogdan'
     ]
     #strings_to_try = vectorizer.read_file_lines(os.path.join('data', 'hots_female_names.txt'))
     strings_to_try = vectorizer.preprocess_strings(strings_to_try, vectorizer.max_string_length)
