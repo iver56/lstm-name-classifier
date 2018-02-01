@@ -12,11 +12,13 @@ def read_file_lines(file_path):
 boy_names = read_file_lines(os.path.join('data', 'norwegian_male_names.txt'))
 girl_names = read_file_lines(os.path.join('data', 'norwegian_female_names.txt'))
 
-print('We have {} boy names and {} girl names'.format(len(boy_names), len(girl_names)))
+print(
+    'We have {} boy names and {} girl names'.format(len(boy_names), len(girl_names))
+)
 print('Example names: "{}" and "{}"'.format(boy_names[40], girl_names[300]))
 
 max_name_length = max(len(name) for name in boy_names + girl_names)
-print('The longest name in the dataset consists of {} characters'.format(max_name_length))
+print('The longest name in the dataset has {} characters'.format(max_name_length))
 
 characters = set(''.join(boy_names)).union(set(''.join(girl_names)))
 num_characters = len(characters)
@@ -77,7 +79,7 @@ y = [0 for _ in boy_vectors] + [1 for _ in girl_vectors]
 
 num_examples = len(x)
 
-# Convert the data into numpy arrays, for efficient processing in the machine learning library
+# Convert the data into numpy arrays, because that is the format Keras expects
 import numpy as np
 
 x = np.array(x).reshape((num_examples, max_name_length, num_characters))
