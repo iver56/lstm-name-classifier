@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 
 import numpy as np
@@ -11,9 +13,9 @@ if __name__ == '__main__':
     vectorizer = Vectorizer()
 
     strings_to_try = [
-        'henrik',
-        'andrea',
-        'åshild',
+        u'henrik',
+        u'andrea',
+        u'åshild',
     ]
     #strings_to_try = vectorizer.read_file_lines(os.path.join('data', 'hots_female_names.txt'))
     strings_to_try = vectorizer.preprocess_strings(strings_to_try, vectorizer.max_string_length)
