@@ -78,12 +78,15 @@ x = boy_vectors + girl_vectors
 y = [0 for _ in boy_vectors] + [1 for _ in girl_vectors]
 
 num_examples = len(x)
+target_vector_size = 1  # the number of entries in each target vector
 
 # Convert the data into numpy arrays, because that is the format Keras expects
 import numpy as np
 
 x = np.array(x).reshape((num_examples, max_name_length, num_characters))
-y = np.array(y).reshape((num_examples, 1))
+y = np.array(y).reshape((num_examples, target_vector_size))
+print('x shape: {}'.format(x.shape))
+print('y shape: {}'.format(y.shape))
 
 # Import Keras
 from keras.layers import Dense
