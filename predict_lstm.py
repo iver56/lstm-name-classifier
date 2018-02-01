@@ -35,8 +35,8 @@ if __name__ == '__main__':
     def predict_and_visualize(that_string):
         that_string = vectorizer.pad_strings([that_string], vectorizer.max_string_length)[0]
         vector = vectorizer.vectorize_string(that_string)
-        vector = np.array([vector])
-        prediction = model.predict(vector)
+        vectors = np.array([vector])
+        prediction = model.predict(vectors)
         prediction = prediction[0][0]
         print_meter(that_string, prediction)
 

@@ -58,13 +58,13 @@ for character_vector in example_string_vectorized:
     print(character_vector)
 
 
-def preprocess_strings(strings):
+def pad_strings(strings):
     # Right pad names so that all names are of equal length
     return [s.ljust(max_name_length) for s in strings]
 
 
-padded_boy_names = preprocess_strings(boy_names)
-padded_girl_names = preprocess_strings(girl_names)
+padded_boy_names = pad_strings(boy_names)
+padded_girl_names = pad_strings(girl_names)
 
 print('Padded strings look like this:')
 print(padded_boy_names[40:42])
@@ -83,13 +83,14 @@ import numpy as np
 x = np.array(x).reshape((num_examples, max_name_length, num_characters))
 y = np.array(y).reshape((num_examples, 1))
 
-
+# Import Keras
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.layers.core import Activation
 from keras.models import Sequential
 from keras.optimizers import RMSprop
 
+# Set up structure of the LSTM model
 model = Sequential()
 model.add(LSTM(units=64, input_shape=(None, num_characters), return_sequences=True))
 model.add(Activation('relu'))
@@ -99,12 +100,23 @@ model.add(Dense(1, activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer=RMSprop(), metrics=['accuracy'])
 print(model.summary())
 
-# Fit model
+# Train the model
 model.fit(x, y, epochs=200, batch_size=128)
 
-# Final evaluation of the model
-scores = model.evaluate(x, y, verbose=0)
-print("Accuracy: %.2f%%" % (scores[1] * 100))
+# Use the model for prediction
+while True:
+    new_string = input('Type a name: ')
 
-model.save(os.path.join('data', 'name_model.h5'))
+    if not new_string:
+        break
 
+    if len(new_string) > max_name_length:
+        new_string = new_string[:max_name_length]
+        print('Note: The string was truncated to {}'.format(new_string))
+
+    new_string = pad_strings([new_string])[0]
+    vectors = [vectorize_string(new_string)]
+
+    prediction = model.predict(np.array(vectors))
+    prediction = prediction[0][0]
+    print('Prediction: {:.2f}'.format(prediction))

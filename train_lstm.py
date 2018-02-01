@@ -103,4 +103,4 @@ class Vectorizer(object):
 
 
 if __name__ == '__main__':
-    Vectorizer().train_model()
+    Vectorizer(mode='training').train_model()
