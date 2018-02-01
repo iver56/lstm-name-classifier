@@ -15,6 +15,9 @@ def print_meter(that_string, prediction, meter_width=50, label_left='boy', label
     :param meter_width: int
     :param label_left:
     :param label_right
+
+    Example output:
+    Iben            boy ______________________|___________________________ girl
     """
     meter_string = list('_' * meter_width)
     meter_index = min(int(round(prediction * meter_width)), meter_width - 1)
@@ -27,7 +30,7 @@ def print_meter(that_string, prediction, meter_width=50, label_left='boy', label
 
 
 if __name__ == '__main__':
-    model = load_model(os.path.join('data', 'name_model.h5'))
+    model = load_model(Vectorizer.MODEL_FILE_PATH)
 
     vectorizer = Vectorizer(mode='prediction')
 
